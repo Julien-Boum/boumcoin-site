@@ -1,51 +1,94 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-const ContactForm = () => {
+const translations = {
+  fr: {
+    title: 'Contactez-nous',
+    name: 'Nom',
+    message: 'Votre message',
+    send: 'Envoyer'
+  },
+  en: {
+    title: 'Contact us',
+    name: 'Name',
+    message: 'Your message',
+    send: 'Send'
+  },
+  es: {
+    title: 'Contáctanos',
+    name: 'Nombre',
+    message: 'Tu mensaje',
+    send: 'Enviar'
+  },
+  it: {
+    title: 'Contattaci',
+    name: 'Nome',
+    message: 'Il tuo messaggio',
+    send: 'Invia'
+  },
+  de: {
+    title: 'Kontaktiere uns',
+    name: 'Name',
+    message: 'Deine Nachricht',
+    send: 'Senden'
+  },
+  pt: {
+    title: 'Contacte-nos',
+    name: 'Nome',
+    message: 'Sua mensagem',
+    send: 'Enviar'
+  }
+};
+
+export default function ContactForm() {
+  const locale = typeof navigator !== 'undefined' ? navigator.language.slice(0, 2) : 'en';
+  const t = translations[locale] || translations.en;
+
+  const [form, setForm] = useState({ name: '', message: '' });
+
+  const handleChange = e => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const mailto = `mailto:hello@boumcoin.com?subject=Message Boumcoin&body=Nom: ${form.name}%0D%0A%0D%0A${form.message}`;
+
   return (
-    <section style={{ padding: '2rem', textAlign: 'center' }}>
-      <h2>📬 Contacte-nous</h2>
-      <form
-        action="https://formspree.io/f/mnqewpqz" // Remplace ce lien par le tien si besoin
-        method="POST"
-        style={{ maxWidth: '400px', margin: '2rem auto' }}
-      >
+    <div style={{ marginTop: '3rem', textAlign: 'center' }}>
+      <h2>{t.title}</h2>
+      <form action={mailto} method="POST" encType="text/plain">
         <input
           type="text"
           name="name"
-          placeholder="Ton nom"
+          placeholder={t.name}
           required
-          style={{ width: '100%', padding: '10px', marginBottom: '1rem' }}
+          value={form.name}
+          onChange={handleChange}
+          style={{ padding: '0.5rem', width: '80%', maxWidth: '400px', margin: '0.5rem 0' }}
         />
-        <input
-          type="email"
-          name="email"
-          placeholder="Ton email"
-          required
-          style={{ width: '100%', padding: '10px', marginBottom: '1rem' }}
-        />
+        <br />
         <textarea
           name="message"
-          placeholder="Ton message"
+          placeholder={t.message}
           required
-          rows="5"
-          style={{ width: '100%', padding: '10px', marginBottom: '1rem' }}
+          value={form.message}
+          onChange={handleChange}
+          style={{ padding: '0.5rem', width: '80%', maxWidth: '400px', height: '100px', marginBottom: '1rem' }}
         />
+        <br />
         <button
           type="submit"
           style={{
-            backgroundColor: '#FF5722',
-            color: '#fff',
-            border: 'none',
-            padding: '10px 20px',
+            background: '#fff572',
+            padding: '0.5rem 1.5rem',
+            borderRadius: '6px',
+            fontWeight: 'bold',
+            fontSize: '16px',
             cursor: 'pointer',
-            borderRadius: '5px',
+            border: 'none'
           }}
         >
-          Envoyer
+          {t.send}
         </button>
       </form>
-    </section>
+    </div>
   );
-};
-
-export default ContactForm;
+}
