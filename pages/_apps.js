@@ -1,26 +1,24 @@
 import '../styles/globals.css'
 import { useEffect, useState } from 'react'
-import { app } from '../utils/firebase'
-import { getFirestore, doc, getDoc } from 'firebase/firestore'
+import { fetchConfig } from '../utils/firebase'
+import AppContext from '../utils/AppContext'
 
-function MyApp({ Component, pageProps }) {
+export default function MyApp({ Component, pageProps }) {
   const [config, setConfig] = useState(null)
 
   useEffect(() => {
-    const fetchData = async () => {
-      const db = getFirestore(app)
-      const docRef = doc(db, 'config', 'site')
-      const docSnap = await getDoc(docRef)
-      if (docSnap.exists()) {
-        setConfig(docSnap.data())
-      }
+    const loadConfig = async () => {
+      const data = await fetchConfig()
+      setConfig(data)
     }
-    fetchData()
+    loadConfig()
   }, [])
 
+  if (!config) return <div>Chargement...</div>
+
   return (
-    <Component {...pageProps} config={config} />
+    <AppContext.Provider value={config}>
+      <Component {...pageProps} />
+    </AppContext.Provider>
   )
 }
-
-export default MyApp
