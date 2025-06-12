@@ -29,6 +29,7 @@ export default function Home() {
           <p>{config?.texts?.fr?.description}</p>
           <BuyButton />
           <SocialLinks />
+          <ContactForm />
         </Layout>
       </AppContext.Provider>
     </>
