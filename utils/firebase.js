@@ -1,29 +1,17 @@
-// utils/firebase.js
-import { initializeApp } from 'firebase/app'
-import { getFirestore, doc, getDoc } from 'firebase/firestore'
+// /utils/firebase.js
+import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
-}
+  apiKey: "AIzaSyB7rbXuhC0rbMW8yK24sX9Rx9Qvinuwb0",
+  authDomain: "config-444cb.firebaseapp.com",
+  projectId: "config-444cb",
+  storageBucket: "config-444cb.appspot.com",
+  messagingSenderId: "240337773323",
+  appId: "1:240337773323:web:4843d915ef11b77e2f80e"
+};
 
-const app = initializeApp(firebaseConfig)
-const db = getFirestore(app)
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-export const fetchConfig = async () => {
-  const ref = doc(db, 'config', 'main')
-  const snap = await getDoc(ref)
-  if (snap.exists()) {
-    return snap.data()
-  } else {
-    console.warn('Configuration Firebase introuvable.')
-    return {}
-  }
-}
-{
-  "buyLink": "https://example.com/acheter-boumcoin"
-}
+export { db };
