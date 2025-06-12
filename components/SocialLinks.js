@@ -1,41 +1,36 @@
-import React, { useEffect, useState } from 'react'
-import fetchConfig from '../utils/fetchConfig'
+import React from 'react';
 
-const iconClassMap = {
-  tiktok: 'fab fa-tiktok',
-  instagram: 'fab fa-instagram',
-  x: 'fab fa-x-twitter', // ou 'fab fa-twitter' si ton CDN ne supporte pas "x"
-  facebook: 'fab fa-facebook',
-  discord: 'fab fa-discord',
-  telegram: 'fab fa-telegram',
-}
+const iconMap = {
+  tiktok: '/icons/tiktok.svg',
+  instagram: '/icons/instagram.svg',
+  x: '/icons/x.svg',
+  facebook: '/icons/facebook.svg',
+  discord: '/icons/discord.svg',
+  telegram: '/icons/telegram.svg',
+};
 
-const SocialLinks = () => {
-  const [links, setLinks] = useState({})
-
-  useEffect(() => {
-    const loadLinks = async () => {
-      const data = await fetchConfig()
-      setLinks(data.socials || {})
-    }
-    loadLinks()
-  }, [])
+const SocialLinks = ({ links }) => {
+  if (!links) return null;
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', flexWrap: 'wrap' }}>
-      {Object.entries(links).map(([key, url]) => (
+    <div style={{ marginTop: '2rem', display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+      {Object.entries(links).map(([platform, url]) => (
         <a
-          key={key}
+          key={platform}
           href={url}
           target="_blank"
           rel="noopener noreferrer"
-          style={{ fontSize: '2rem', color: '#000' }}
+          style={{ display: 'inline-block' }}
         >
-          <i className={iconClassMap[key.toLowerCase()] || 'fas fa-link'}></i>
+          <img
+            src={iconMap[platform] || '/icons/default.svg'}
+            alt={platform}
+            style={{ width: '32px', height: '32px' }}
+          />
         </a>
       ))}
     </div>
-  )
-}
+  );
+};
 
-export default SocialLinks
+export default SocialLinks;
