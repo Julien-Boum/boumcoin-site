@@ -1,5 +1,15 @@
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
+import BuyButton from '../components/BuyButton'
+
+export default function Home() {
+  return (
+    <div>
+      {/* ... autres composants */}
+      <BuyButton />
+    </div>
+  )
+}
 
 export default function Home({ config }) {
   const [lang, setLang] = useState('fr')
