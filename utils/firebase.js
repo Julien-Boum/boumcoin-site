@@ -24,3 +24,6 @@ export const fetchConfig = async () => {
     return {}
   }
 }
+{
+  "buyLink": "https://example.com/acheter-boumcoin"
+}
