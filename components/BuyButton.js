@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import fetchConfig from '../utils/fetchConfig'
-import { useRouter } from 'next/router'
+import React, { useEffect, useState } from 'react';
+import fetchConfig from '../utils/fetchConfig';
+import { useRouter } from 'next/router';
 
 const translations = {
   fr: 'Acheter Boumcoin',
@@ -8,24 +8,27 @@ const translations = {
   es: 'Comprar Boumcoin',
   it: 'Compra Boumcoin',
   de: 'Boumcoin kaufen',
-  pt: 'Comprar Boumcoin',
-}
+  pt: 'Comprar Boumcoin'
+};
 
 const BuyButton = () => {
-  const [buyUrl, setBuyUrl] = useState('')
-  const { locale } = useRouter()
+  const [buyUrl, setBuyUrl] = useState('');
+  const { locale } = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await fetchConfig()
-      if (data && data.buyLink) setBuyUrl(data.buyLink)
-    }
-    fetchData()
-  }, [])
+      try {
+        const data = await fetchConfig();
+        if (data?.buyLink) setBuyUrl(data.buyLink);
+      } catch (e) {
+        console.error('Erreur fetch buyLink:', e);
+      }
+    };
+    fetchData();
+  }, []);
 
-  const label = translations[locale] || translations['en']
-
-  if (!buyUrl) return null
+  const label = translations[locale] || translations['en'];
+  if (!buyUrl) return null;
 
   return (
     <div style={{ margin: '2rem auto', textAlign: 'center' }}>
@@ -37,15 +40,16 @@ const BuyButton = () => {
           background: '#ff5722',
           padding: '15px 30px',
           fontSize: '18px',
-          color: '#fff',
+          color: 'white',
           borderRadius: '6px',
-          textDecoration: 'none',
+          border: 'none',
+          textDecoration: 'none'
         }}
       >
         {label}
       </a>
     </div>
-  )
-}
+  );
+};
 
-export default BuyButton
+export default BuyButton;
