@@ -1,37 +1,29 @@
-// pages/index.js
-
-import Head from 'next/head'
-import { useEffect, useState } from 'react'
-import { fetchConfig } from '../utils/fetchConfig'
-import { AppContext } from '../utils/AppContext'
-import Layout from '../components/Layout'
-import BuyButton from '../components/BuyButton'
-import SocialLinks from '../components/SocialLinks'
-import ContactForm from '../components/ContactForm';
+import Head from 'next/head';
+import { useEffect, useState } from 'react';
+import fetchConfig from '../utils/fetchConfig';
+import AppContext from '../utils/AppContext';
+import Layout from '../components/Layout';
 
 export default function Home() {
-  const [config, setConfig] = useState(null)
+  const [config, setConfig] = useState(null);
 
   useEffect(() => {
-    fetchConfig().then(setConfig)
-  }, [])
+    fetchConfig().then(setConfig);
+  }, []);
 
-  if (!config) return <p>Chargement...</p>
+  if (!config) return <p>Chargement...</p>;
 
   return (
     <>
       <Head>
-        <title>{config?.texts?.fr?.title || 'BOUMCOIN'}</title>
+        <title>{config.texts?.title || 'BOUMCOIN'}</title>
       </Head>
       <AppContext.Provider value={config}>
         <Layout>
-          <h1>{config?.texts?.fr?.title}</h1>
-          <p>{config?.texts?.fr?.description}</p>
-          <BuyButton />
-          <SocialLinks />
-          <ContactForm />
+          <p>{config.texts?.cta || 'Acheter des Boumcoin !'}</p>
+          <p>{config.texts?.footer || '© 2025 Boumcoin'}</p>
         </Layout>
       </AppContext.Provider>
     </>
-  )
+  );
 }
