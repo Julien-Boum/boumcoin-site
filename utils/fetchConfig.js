@@ -1,28 +1,31 @@
-import { getDatabase, ref, get } from 'firebase/database'
-import { initializeApp } from 'firebase/app'
+import { initializeApp } from 'firebase/app';
+import { getFirestore, doc, getDoc } from 'firebase/firestore';
 
-// Config Firebase – à modifier avec tes vraies infos si besoin
 const firebaseConfig = {
-  apiKey: "AIza...xxx",               // à personnaliser
-  authDomain: "boumcoin.firebaseapp.com",
-  databaseURL: "https://boumcoin-default-rtdb.firebaseio.com",
-  projectId: "boumcoin",
-  storageBucket: "boumcoin.appspot.com",
-  messagingSenderId: "1234567890",
-  appId: "1:1234567890:web:abcdef123456"
-}
+  apiKey: "xxxxxxxxxxxx",
+  authDomain: "xxxxxxxxxxxx.firebaseapp.com",
+  projectId: "xxxxxxxx",
+  storageBucket: "xxxxxxxx.appspot.com",
+  messagingSenderId: "xxxxxxxx",
+  appId: "xxxxxxxxxxxxxxxx"
+};
 
-const app = initializeApp(firebaseConfig)
-const db = getDatabase(app)
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 const fetchConfig = async () => {
   try {
-    const snapshot = await get(ref(db, 'siteConfig'))
-    return snapshot.exists() ? snapshot.val() : null
-  } catch (error) {
-    console.error("Erreur récupération Firebase :", error)
-    return null
+    const docRef = doc(db, 'config', 'main');
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) return docSnap.data();
+    else {
+      console.warn("Document config/main introuvable");
+      return null;
+    }
+  } catch (err) {
+    console.error("Erreur Firebase:", err);
+    return null;
   }
-}
+};
 
-export default fetchConfig
+export default fetchConfig;
