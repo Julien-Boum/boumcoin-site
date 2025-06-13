@@ -15,6 +15,7 @@ export default function ContactForm() {
   const t = translations[locale] || translations['en'];
 
   const [form, setForm] = useState({ name: '', message: '' });
+  const [sending, setSending] = useState(false);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -22,12 +23,27 @@ export default function ContactForm() {
 
   const sendEmail = (e) => {
     e.preventDefault();
-    emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', {
-      name: form.name,
-      message: form.message,
-    }, 'YOUR_PUBLIC_KEY')
-      .then(() => alert('Message envoyé !'))
-      .catch((error) => alert('Erreur : ' + error.text));
+    setSending(true);
+
+    emailjs.send(
+      process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+      process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
+      {
+        name: form.name,
+        message: form.message,
+      },
+      process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+    )
+      .then(() => {
+        alert('✅ Message envoyé !');
+        setForm({ name: '', message: '' });
+      })
+      .catch((error) => {
+        alert('❌ Une erreur est survenue : ' + error.text);
+      })
+      .finally(() => {
+        setSending(false);
+      });
   };
 
   return (
@@ -53,16 +69,20 @@ export default function ContactForm() {
           style={{ padding: '0.5rem', width: '60%', maxWidth: '400px', height: '100px', marginBottom: '1rem' }}
         />
         <br />
-        <button type="submit" style={{
-          background: '#ff5722',
-          color: 'white',
-          padding: '0.5rem 1.5rem',
-          borderRadius: '6px',
-          fontSize: '16px',
-          cursor: 'pointer',
-          border: 'none'
-        }}>
-          {t.send}
+        <button
+          type="submit"
+          disabled={sending}
+          style={{
+            background: sending ? '#ccc' : '#ff5722',
+            color: 'white',
+            padding: '0.5rem 1.5rem',
+            borderRadius: '6px',
+            fontSize: '16px',
+            cursor: 'pointer',
+            border: 'none',
+          }}
+        >
+          {sending ? '...' : t.send}
         </button>
       </form>
     </div>
